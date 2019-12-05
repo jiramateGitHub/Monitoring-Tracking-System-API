@@ -124,13 +124,13 @@ app.put('/process_manager/:id', (req, res) => {
     })
 })
 
-app.get('/process', (req, res) => {
+app.get('/process/:pcs_pcsg_id', (req, res) => {
  let sql = 'SELECT * '+
 			'FROM mts_process '+
 			'INNER JOIN mts_process_group '+
 			'ON pcs_pcsg_id = pcsg_id '+
 			'WHERE pcs_active = "Y" '+
-			'AND pcs_pcsg_id = ' + req.body.pcsg_id + ";";
+			'AND pcs_pcsg_id = ' + req.params.pcs_pcsg_id + ";";
     let query = db.query(sql,(err,results) => { 
        if(err) throw err  
        res.json(results)   
