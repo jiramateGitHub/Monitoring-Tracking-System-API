@@ -149,6 +149,18 @@ app.get('/procedure/:pcs_id', (req, res) => {
        res.json(results)   
     })
 })
+app.get('/procedure_state/:pcds_pcd_id', (req, res) => {
+ let sql = 'SELECT * '+
+			'FROM mts_procedure_state '+
+			'INNER JOIN mts_state '+
+			'ON pcds_st_id = st_id '+
+			'WHERE pcds_active = "Y" '+
+			'AND pcds_pcd_id = ' + req.params.pcds_pcd_id + ";";
+    let query = db.query(sql,(err,results) => { 
+       if(err) throw err  
+       res.json(results)   
+    })
+})
 
 app.listen(3000, () => {
  console.log('Start server at port 3000.')
