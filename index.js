@@ -29,7 +29,7 @@ db.connect(function(err) {
 });
 
 app.get('/hr_person', (req, res) => {
- let sql = 'SELECT ps_id,pf_name,ps_fname,ps_lname FROM hr_person as per LEFT JOIN hr_prefix as pre ON per.ps_pf_id = pre.pf_id' 
+ let sql = 'SELECT ps_id,pf_name,ps_fname,ps_lname,CONCAT(pf_name,ps_fname," ",ps_lname) as name FROM hr_person as per LEFT JOIN hr_prefix as pre ON per.ps_pf_id = pre.pf_id' 
     let query = db.query(sql,(err,results) => { 
        if(err) throw err  
        res.json(results)   
