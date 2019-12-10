@@ -129,6 +129,10 @@ app.get('/process/:pcs_pcsg_id', (req, res) => {
 			'FROM mts_process '+
 			'INNER JOIN mts_process_group '+
 			'ON pcs_pcsg_id = pcsg_id '+
+			'INNER JOIN mts_case_manager '+
+			'ON cmgr_pcs_id = pcs_id '+
+			'INNER JOIN hr_person '+
+			'ON cmgr_ps_id = ps_id '+
 			'WHERE pcs_active = "Y" '+
 			'AND pcs_pcsg_id = ' + req.params.pcs_pcsg_id + ";";
     let query = db.query(sql,(err,results) => { 
@@ -251,6 +255,25 @@ app.get('/procedure_state/:pcds_pcd_id', (req, res) => {
 			'ON pcds_st_id = st_id '+
 			'WHERE pcds_active = "Y" '+
 			'AND pcds_pcd_id = ' + req.params.pcds_pcd_id + ";";
+    let query = db.query(sql,(err,results) => { 
+       if(err) throw err  
+       res.json(results)   
+    })
+})
+
+app.get('/case/:case_pcs_id', (req, res) => {
+ let sql = 'SELECT * '+
+			'FROM mts_case '+
+			'INNER JOIN mts_case_procedure '+
+			'ON case_id = cpcd_case_id '+
+			'INNER JOIN mts_task_manager '+
+			'ON case_id = tmgr_cpcd_id '+
+			'INNER JOIN hr_person '+
+			'ON tmgr_ps_id = ps_id '+
+			'WHERE case_active = "Y" '+
+			'AND case_pcs_id = ' + req.params.case_pcs_id + ' ' +
+			'GROUP BY case_id '+";";
+	console.log(sql)
     let query = db.query(sql,(err,results) => { 
        if(err) throw err  
        res.json(results)   
