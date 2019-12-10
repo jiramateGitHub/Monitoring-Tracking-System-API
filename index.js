@@ -137,6 +137,101 @@ app.get('/process/:pcs_pcsg_id', (req, res) => {
     })
 })
 
+app.post('/process', (req, res) => {
+    let sql = "INSERT INTO mts_process(" + 
+                "pcs_code," +
+                "pcs_th," + 
+                "pcs_en," + 
+                "pcs_pcsg_id," +
+                "pcs_year_type," + 
+                "pcs_year," + 
+                "pcs_seq," + 
+                "pcs_enforce," + 
+                "pcs_skip," + 
+                "pcs_free," + 
+                "pcs_active," + 
+                "pcs_editor" + 
+            ") VALUES('" +
+                req.body.pcs_code + "','" +
+                req.body.pcs_th + "','" +
+                req.body.pcs_en + "','" +
+                req.body.pcs_pcsg_id + "','" +
+                req.body.pcs_year_type + "','" +
+                req.body.pcs_year + "','" +
+                req.body.pcs_seq + "','" +
+                req.body.pcs_enforce + "','" +
+                req.body.pcs_skip + "','" +
+                req.body.pcs_free + "','" +
+                req.body.pcs_active + "','" +
+                req.body.pcs_editor + "'"+
+            ");"
+    let query = db.query(sql,(err,result) => {
+        if(err) throw err
+        res.json(result)
+    })
+})
+
+app.post('/case_manager', (req, res) => {
+    let sql = "INSERT INTO mts_case_manager(" + 
+                "cmgr_pcs_id," +
+                "cmgr_ps_id," + 
+                "cmgr_active," + 
+                "cmgr_editor" +
+            ") VALUES('" +
+                req.body.cmgr_pcs_id + "','" +
+                req.body.cmgr_ps_id + "','" +
+                req.body.cmgr_active + "','" +
+                req.body.cmgr_editor + "'" +
+            ");"
+    let query = db.query(sql,(err,result) => {
+        if(err) throw err
+        res.json(result)
+    })
+})
+
+app.put('/process_active_update/:id', (req, res) => {
+    let sql = "UPDATE mts_process SET pcs_active = '"+ req.body.pcs_active + "',"+
+							"pcs_editor = '"+ req.body.pcs_editor + "' "+
+							"WHERE pcs_id = "+ req.params.id + ";"
+
+    let query = db.query(sql,(err,result) => {
+        if(err) throw err	
+        res.json(result)
+    })
+})
+
+app.put('/process/:id', (req, res) => {
+    let sql = "UPDATE mts_process SET pcs_code = '"+ req.body.pcs_code + "',"+
+							"pcs_th = '"+ req.body.pcs_th + "',"+
+							"pcs_en = '"+ req.body.pcs_en + "',"+
+							"pcs_pcsg_id = '"+ req.body.pcs_pcsg_id + "',"+
+							"pcs_year_type = '"+ req.body.pcs_year_type + "',"+
+							"pcs_year = '"+ req.body.pcs_year + "',"+
+							"pcs_seq = '"+ req.body.pcs_seq + "',"+
+							"pcs_enforce = '"+ req.body.pcs_enforce + "',"+
+							"pcs_skip = '"+ req.body.pcs_skip + "',"+
+							"pcs_free = '"+ req.body.pcs_free + "',"+
+							"pcs_active = '"+ req.body.pcs_active + "',"+
+							"pcs_editor = '"+ req.body.pcs_editor + "' "+
+							"WHERE pcs_id = "+ req.params.id + ";"
+
+    let query = db.query(sql,(err,result) => {
+        if(err) throw err	
+        res.json(result)
+    })
+})
+
+app.put('/case_manager/:id', (req, res) => {
+    let sql = "UPDATE mts_case_manager SET cmgr_pcs_id = '"+ req.body.cmgr_pcs_id + "',"+
+							"cmgr_ps_id = '"+ req.body.cmgr_ps_id + "' "+
+							"WHERE cmgr_pcs_id = "+ req.params.id + ";"
+
+    let query = db.query(sql,(err,result) => {
+        if(err) throw err	
+        res.json(result)
+    })
+})
+
 app.get('/procedure/:pcs_id', (req, res) => {
  let sql = 'SELECT * '+
 			'FROM mts_procedure '+
