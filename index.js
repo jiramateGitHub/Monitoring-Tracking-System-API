@@ -264,8 +264,6 @@ app.get('/procedure_state/:pcds_pcd_id', (req, res) => {
 app.get('/case/:case_pcs_id', (req, res) => {
  let sql = 'SELECT * '+
 			'FROM mts_case '+
-			'INNER JOIN mts_case_procedure '+
-			'ON case_id = cpcd_case_id '+
 			'INNER JOIN mts_task_manager '+
 			'ON case_id = tmgr_cpcd_id '+
 			'INNER JOIN hr_person '+
@@ -282,15 +280,21 @@ app.get('/case/:case_pcs_id', (req, res) => {
 
 app.post('/case', (req, res) => {
     let sql = "INSERT INTO mts_case (" + 
+                "case_pcs_id," +
                 "case_code," +
                 "case_th," + 
                 "case_en," + 
+                "case_seq," + 
+                "case_percentage," + 
                 "case_active," +
                 "case_editor" + 
             ") VALUES('" +
+                req.body.case_pcs_id + "','" +
                 req.body.case_code + "','" +
                 req.body.case_th + "','" +
                 req.body.case_en + "','" +
+                req.body.case_seq + "','" +
+                req.body.case_percentage + "','" +
                 req.body.case_active + "','" +
                 req.body.case_editor + "'"+
             ");"
@@ -324,8 +328,8 @@ app.post('/case_procedure', (req, res) => {
                 "cpcd_abbr," + 
                 "cpcd_ratio," + 
                 "cpcd_skip," + 
-                "case_active," + 
-                "case_editor" + 
+                "cpcd_active," + 
+                "cpcd_editor" + 
             ") VALUES('" +
                 req.body.cpcd_case_id + "','" +
                 req.body.cpcd_pcd_id + "','" +
@@ -333,9 +337,10 @@ app.post('/case_procedure', (req, res) => {
                 req.body.cpcd_th + "','" +
                 req.body.cpcd_en + "','" +
                 req.body.cpcd_abbr + "','" +
+                req.body.cpcd_ratio + "','" +
                 req.body.cpcd_skip + "','" +
-                req.body.case_active + "','" +
-                req.body.case_editor + "'"+
+                req.body.cpcd_active + "','" +
+                req.body.cpcd_editor + "'"+
             ");"
     let query = db.query(sql,(err,result) => {
         if(err) throw err
