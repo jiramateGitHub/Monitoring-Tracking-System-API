@@ -280,6 +280,115 @@ app.get('/case/:case_pcs_id', (req, res) => {
     })
 })
 
+app.post('/case', (req, res) => {
+    let sql = "INSERT INTO mts_case (" + 
+                "case_code," +
+                "case_th," + 
+                "case_en," + 
+                "case_active," +
+                "case_editor" + 
+            ") VALUES('" +
+                req.body.case_code + "','" +
+                req.body.case_th + "','" +
+                req.body.case_en + "','" +
+                req.body.case_active + "','" +
+                req.body.case_editor + "'"+
+            ");"
+    let query = db.query(sql,(err,result) => {
+        if(err) throw err
+        res.json(result)
+    })
+})
+
+app.put('/case/:id', (req, res) => {
+    let sql = "UPDATE mts_case SET case_code = '"+ req.body.case_code + "',"+
+							"case_th = '"+ req.body.case_th + "',"+
+							"case_en = '"+ req.body.case_en + "',"+
+							"case_active = '"+ req.body.case_active + "',"+
+							"case_editor = '"+ req.body.case_editor + "' "+
+							"WHERE pcs_id = "+ req.params.id + ";"
+
+    let query = db.query(sql,(err,result) => {
+        if(err) throw err	
+        res.json(result)
+    })
+})
+
+app.post('/case_procedure', (req, res) => {
+    let sql = "INSERT INTO mts_case_procedure(" + 
+                "cpcd_case_id," +
+                "cpcd_pcd_id," + 
+                "cpcd_seq," + 
+                "cpcd_th," +
+                "cpcd_en," + 
+                "cpcd_abbr," + 
+                "cpcd_ratio," + 
+                "cpcd_skip," + 
+                "case_active," + 
+                "case_editor" + 
+            ") VALUES('" +
+                req.body.cpcd_case_id + "','" +
+                req.body.cpcd_pcd_id + "','" +
+                req.body.cpcd_seq + "','" +
+                req.body.cpcd_th + "','" +
+                req.body.cpcd_en + "','" +
+                req.body.cpcd_abbr + "','" +
+                req.body.cpcd_skip + "','" +
+                req.body.case_active + "','" +
+                req.body.case_editor + "'"+
+            ");"
+    let query = db.query(sql,(err,result) => {
+        if(err) throw err
+        res.json(result)
+    })
+})
+
+app.post('/task_manager', (req, res) => {
+    let sql = "INSERT INTO mts_task_manager(" + 
+                "tmgr_cpcd_id," +
+                "tmgr_ps_id," + 
+                "tmgr_active," + 
+                "tmgr_editor" +
+            ") VALUES('" +
+                req.body.tmgr_cpcd_id + "','" +
+                req.body.tmgr_ps_id + "','" +
+                req.body.tmgr_active + "','" +
+                req.body.tmgr_editor + "'" +
+            ");"
+    let query = db.query(sql,(err,result) => {
+        if(err) throw err
+        res.json(result)
+    })
+})
+
+app.put('/task_manager/:id', (req, res) => {
+    let sql = "UPDATE mts_task_manager SET tmgr_cpcd_id = '"+ req.body.tmgr_cpcd_id + "',"+
+							"tmgr_ps_id = '"+ req.body.tmgr_ps_id + "' "+
+							"WHERE tmgr_cpcd_id = "+ req.params.id + ";"
+
+    let query = db.query(sql,(err,result) => {
+        if(err) throw err	
+        res.json(result)
+    })
+})
+
+app.get('/case_procedure/:case_id', (req, res) => {
+ let sql = 'SELECT * '+
+			'FROM mts_case '+
+			'INNER JOIN mts_process '+
+			'ON pcs_id = case_pcs_id '+
+			'INNER JOIN mts_procedure '+
+			'ON pcs_id = pcd_pcs_id '+
+			'WHERE case_id = ' + req.params.case_id + ';'
+	console.log(sql)
+    let query = db.query(sql,(err,results) => { 
+       if(err) throw err  
+       res.json(results)   
+    })
+})
+
+
+
 app.listen(3000, () => {
  console.log('Start server at port 3000.')
 })
