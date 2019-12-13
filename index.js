@@ -310,7 +310,18 @@ app.put('/case/:id', (req, res) => {
 							"case_en = '"+ req.body.case_en + "',"+
 							"case_active = '"+ req.body.case_active + "',"+
 							"case_editor = '"+ req.body.case_editor + "' "+
-							"WHERE pcs_id = "+ req.params.id + ";"
+							"WHERE case_id = "+ req.params.id + ";"
+
+    let query = db.query(sql,(err,result) => {
+        if(err) throw err	
+        res.json(result)
+    })
+})
+
+app.put('/case_active_update/:id', (req, res) => {
+    let sql = "UPDATE mts_case SET case_active = '"+ req.body.case_active + "',"+
+							"case_editor = '"+ req.body.case_editor + "' "+
+							"WHERE case_id = "+ req.params.id + ";"
 
     let query = db.query(sql,(err,result) => {
         if(err) throw err	
