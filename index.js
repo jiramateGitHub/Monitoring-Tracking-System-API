@@ -28,6 +28,7 @@ db.connect(function(err) {
   console.log("Connected!");
 });
 
+//Get hr_person from database
 app.get('/hr_person', (req, res) => {
  let sql = 'SELECT ps_id,pf_name,ps_fname,ps_lname,CONCAT(pf_name,ps_fname," ",ps_lname) as name FROM hr_person as per LEFT JOIN hr_prefix as pre ON per.ps_pf_id = pre.pf_id' 
     let query = db.query(sql,(err,results) => { 
@@ -36,6 +37,7 @@ app.get('/hr_person', (req, res) => {
     })
 })
 
+//Get process_group from database
 app.get('/process_group', (req, res) => {
  let sql = 'SELECT pcsg_id,ps_id,ps_fname,ps_lname,pcsg_th,pcsg_en,pcsg_code '+
 			'FROM mts_process_manager '+
@@ -51,6 +53,7 @@ app.get('/process_group', (req, res) => {
     })
 })
    
+//Insert process_group
 app.post('/process_group', (req, res) => {
     let sql = "INSERT INTO mts_process_group(" + 
                 "pcsg_code," +
@@ -71,6 +74,7 @@ app.post('/process_group', (req, res) => {
     })
 })
 
+//Insert process_manager
 app.post('/process_manager', (req, res) => {
     let sql = "INSERT INTO mts_process_manager(" + 
                 "pcsm_pcsg_id," +
@@ -89,6 +93,7 @@ app.post('/process_manager', (req, res) => {
     })
 })
 
+//Update process_group_active_update
 app.put('/process_group_active_update/:id', (req, res) => {
     let sql = "UPDATE mts_process_group SET pcsg_active = '"+ req.body.pcsg_active + "',"+
 							"pcsg_editor = '"+ req.body.pcsg_editor + "' "+
@@ -100,6 +105,7 @@ app.put('/process_group_active_update/:id', (req, res) => {
     })
 })
 
+//Update process_group
 app.put('/process_group/:id', (req, res) => {
     let sql = "UPDATE mts_process_group SET pcsg_code = '"+ req.body.pcsg_code + "',"+
 							"pcsg_th = '"+ req.body.pcsg_th + "',"+
@@ -113,6 +119,7 @@ app.put('/process_group/:id', (req, res) => {
     })
 })
 
+//Update process_manager
 app.put('/process_manager/:id', (req, res) => {
     let sql = "UPDATE mts_process_manager SET pcsm_pcsg_id = '"+ req.body.pcsm_pcsg_id + "',"+
 							"pcsm_ps_id = '"+ req.body.pcsm_ps_id + "' "+
@@ -124,6 +131,7 @@ app.put('/process_manager/:id', (req, res) => {
     })
 })
 
+//Get process from database
 app.get('/process/:pcs_pcsg_id', (req, res) => {
  let sql = 'SELECT * '+
 			'FROM mts_process '+
@@ -141,6 +149,7 @@ app.get('/process/:pcs_pcsg_id', (req, res) => {
     })
 })
 
+//Insert process
 app.post('/process', (req, res) => {
     let sql = "INSERT INTO mts_process(" + 
                 "pcs_code," +
@@ -175,6 +184,7 @@ app.post('/process', (req, res) => {
     })
 })
 
+//Insert case_manager
 app.post('/case_manager', (req, res) => {
     let sql = "INSERT INTO mts_case_manager(" + 
                 "cmgr_pcs_id," +
@@ -193,6 +203,7 @@ app.post('/case_manager', (req, res) => {
     })
 })
 
+//Update process_active_update
 app.put('/process_active_update/:id', (req, res) => {
     let sql = "UPDATE mts_process SET pcs_active = '"+ req.body.pcs_active + "',"+
 							"pcs_editor = '"+ req.body.pcs_editor + "' "+
@@ -204,6 +215,7 @@ app.put('/process_active_update/:id', (req, res) => {
     })
 })
 
+//Update process
 app.put('/process/:id', (req, res) => {
     let sql = "UPDATE mts_process SET pcs_code = '"+ req.body.pcs_code + "',"+
 							"pcs_th = '"+ req.body.pcs_th + "',"+
@@ -225,6 +237,7 @@ app.put('/process/:id', (req, res) => {
     })
 })
 
+//Update case_manager
 app.put('/case_manager/:id', (req, res) => {
     let sql = "UPDATE mts_case_manager SET cmgr_pcs_id = '"+ req.body.cmgr_pcs_id + "',"+
 							"cmgr_ps_id = '"+ req.body.cmgr_ps_id + "' "+
@@ -236,6 +249,7 @@ app.put('/case_manager/:id', (req, res) => {
     })
 })
 
+//Get procedure from database
 app.get('/procedure/:pcs_id', (req, res) => {
  let sql = 'SELECT * '+
 			'FROM mts_procedure '+
@@ -248,6 +262,61 @@ app.get('/procedure/:pcs_id', (req, res) => {
        res.json(results)   
     })
 })
+
+//Insert procedure
+app.post('/procedure', (req, res) => {
+    let sql = "INSERT INTO mts_procedure(" + 
+                "pcd_pcs_id," +
+                "pcd_seq," + 
+                "pcd_th," + 
+                "pcd_en," +
+                "pcd_abbr," +
+                "pcd_active," +
+                "pcd_editor" + 
+            ") VALUES('" +
+                req.body.pcd_pcs_id + "','" +
+                req.body.pcd_seq + "','" +
+                req.body.pcd_th + "','" +
+                req.body.pcd_en + "','" +
+                req.body.pcd_abbr + "','" +
+                req.body.pcd_active + "','" +
+                req.body.pcd_editor + "'"+
+            ");"
+    let query = db.query(sql,(err,result) => {
+        if(err) throw err
+        res.json(result)
+    })
+})
+
+//Update procedure
+app.put('/procedure/:id', (req, res) => {
+    let sql = "UPDATE mts_procedure SET pcd_seq = '"+ req.body.pcd_seq + "',"+
+							"pcd_th = '"+ req.body.pcd_th + "',"+
+							"pcd_en = '"+ req.body.pcd_en + "',"+
+							"pcd_abbr = '"+ req.body.pcd_abbr + "',"+
+							"pcd_active = '"+ req.body.pcd_active + "',"+
+							"pcd_editor = '"+ req.body.pcd_editor + "' "+
+							"WHERE pcd_id = "+ req.params.id + ";"
+
+    let query = db.query(sql,(err,result) => {
+        if(err) throw err	
+        res.json(result)
+    })
+})
+
+//Update procedure_active_update
+app.put('/procedure_active_update/:id', (req, res) => {
+    let sql = "UPDATE mts_procedure SET pcd_active = '"+ req.body.pcd_active + "',"+
+							"pcd_editor = '"+ req.body.pcd_editor + "' "+
+							"WHERE pcd_id = "+ req.params.id + ";"
+
+    let query = db.query(sql,(err,result) => {
+        if(err) throw err	
+        res.json(result)
+    })
+})
+
+//Get procedure_state from database
 app.get('/procedure_state/:pcds_pcd_id', (req, res) => {
  let sql = 'SELECT * '+
 			'FROM mts_procedure_state '+
@@ -261,6 +330,7 @@ app.get('/procedure_state/:pcds_pcd_id', (req, res) => {
     })
 })
 
+//Get case from database
 app.get('/case/:case_pcs_id', (req, res) => {
  let sql = 'SELECT * '+
 			'FROM mts_case '+
@@ -278,6 +348,7 @@ app.get('/case/:case_pcs_id', (req, res) => {
     })
 })
 
+//Insert case
 app.post('/case', (req, res) => {
     let sql = "INSERT INTO mts_case (" + 
                 "case_pcs_id," +
@@ -304,6 +375,7 @@ app.post('/case', (req, res) => {
     })
 })
 
+//Update case
 app.put('/case/:id', (req, res) => {
     let sql = "UPDATE mts_case SET case_code = '"+ req.body.case_code + "',"+
 							"case_th = '"+ req.body.case_th + "',"+
@@ -318,6 +390,7 @@ app.put('/case/:id', (req, res) => {
     })
 })
 
+//Update case_active_update
 app.put('/case_active_update/:id', (req, res) => {
     let sql = "UPDATE mts_case SET case_active = '"+ req.body.case_active + "',"+
 							"case_editor = '"+ req.body.case_editor + "' "+
@@ -329,6 +402,7 @@ app.put('/case_active_update/:id', (req, res) => {
     })
 })
 
+//Insert case_procedure
 app.post('/case_procedure', (req, res) => {
     let sql = "INSERT INTO mts_case_procedure(" + 
                 "cpcd_case_id," +
@@ -359,6 +433,7 @@ app.post('/case_procedure', (req, res) => {
     })
 })
 
+//Insert task_manager
 app.post('/task_manager', (req, res) => {
     let sql = "INSERT INTO mts_task_manager(" + 
                 "tmgr_cpcd_id," +
@@ -377,6 +452,7 @@ app.post('/task_manager', (req, res) => {
     })
 })
 
+//Update task_manager
 app.put('/task_manager/:id', (req, res) => {
     let sql = "UPDATE mts_task_manager SET tmgr_cpcd_id = '"+ req.body.tmgr_cpcd_id + "',"+
 							"tmgr_ps_id = '"+ req.body.tmgr_ps_id + "' "+
@@ -388,6 +464,7 @@ app.put('/task_manager/:id', (req, res) => {
     })
 })
 
+//get case_procedure from database
 app.get('/case_procedure/:case_id', (req, res) => {
  let sql = 'SELECT * '+
 			'FROM mts_case '+
@@ -402,8 +479,6 @@ app.get('/case_procedure/:case_id', (req, res) => {
        res.json(results)   
     })
 })
-
-
 
 app.listen(3000, () => {
  console.log('Start server at port 3000.')
