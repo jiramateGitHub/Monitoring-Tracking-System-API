@@ -290,10 +290,9 @@ app.post('/procedure', (req, res) => {
 
 //Update procedure
 app.put('/procedure/:id', (req, res) => {
-    let sql = "UPDATE mts_procedure SET pcd_seq = '"+ req.body.pcd_seq + "',"+
+    let sql = "UPDATE mts_procedure SET pcd_abbr = '"+ req.body.pcd_abbr + "',"+
 							"pcd_th = '"+ req.body.pcd_th + "',"+
 							"pcd_en = '"+ req.body.pcd_en + "',"+
-							"pcd_abbr = '"+ req.body.pcd_abbr + "',"+
 							"pcd_active = '"+ req.body.pcd_active + "',"+
 							"pcd_editor = '"+ req.body.pcd_editor + "' "+
 							"WHERE pcd_id = "+ req.params.id + ";"
@@ -528,6 +527,23 @@ app.post('/state', (req, res) => {
     })
 })
 
+//Get case_task from database
+app.get('/case_task/:tmgr_ps_id', (req, res) => {
+ let sql = 'SELECT * '+
+			'FROM mts_case '+
+			'INNER JOIN mts_process '+
+			'ON pcs_id = case_pcs_id '+
+			'INNER JOIN mts_task_manager '+
+			'ON case_id = tmgr_cpcd_id '+
+			'WHERE tmgr_ps_id = '+ req.params.tmgr_ps_id + ' ' + 
+			'ORDER BY case_id DESC ' 
+    let query = db.query(sql,(err,results) => { 
+       if(err) throw err  
+       res.json(results)   
+    })
+})
+   
+   
 app.listen(3000, () => {
  console.log('Start server at port 3000.')
 })
