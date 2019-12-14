@@ -480,6 +480,54 @@ app.get('/case_procedure/:case_id', (req, res) => {
     })
 })
 
+//Insert procedure_state
+app.post('/procedure_state', (req, res) => {
+    let sql = "INSERT INTO mts_procedure_state(" + 
+                "pcds_pcd_id," +
+                "pcds_st_id," + 
+                "pcds_seq," + 
+                "pcds_start," +
+                "pcds_end," +
+                "pcds_active," +
+                "pcds_editor" + 
+            ") VALUES('" +
+                req.body.pcds_pcd_id + "','" +
+                req.body.pcds_st_id + "','" +
+                req.body.pcds_seq + "','" +
+                req.body.pcds_start + "','" +
+                req.body.pcds_end + "','" +
+                req.body.pcds_active + "','" +
+                req.body.pcds_editor + "'"+
+            ");"
+    let query = db.query(sql,(err,result) => {
+        if(err) throw err
+        res.json(result)
+    })
+})
+
+//Insert state
+app.post('/state', (req, res) => {
+    let sql = "INSERT INTO mts_state(" + 
+                "st_code," +
+                "st_th," + 
+                "st_en," + 
+                "st_color," +
+                "st_active," +
+                "st_editor" + 
+            ") VALUES('" +
+                req.body.st_code + "','" +
+                req.body.st_th + "','" +
+                req.body.st_en + "','" +
+                req.body.st_color + "','" +
+                req.body.st_active + "','" +
+                req.body.st_editor + "'"+
+            ");"
+    let query = db.query(sql,(err,result) => {
+        if(err) throw err
+        res.json(result)
+    })
+})
+
 app.listen(3000, () => {
  console.log('Start server at port 3000.')
 })
