@@ -334,7 +334,7 @@ app.get('/case/:case_pcs_id', (req, res) => {
  let sql = 'SELECT * '+
 			'FROM mts_case '+
 			'INNER JOIN mts_task_manager '+
-			'ON case_id = tmgr_cpcd_id '+
+			'ON case_id = tmgr_case_id '+
 			'INNER JOIN hr_person '+
 			'ON tmgr_ps_id = ps_id '+
 			'WHERE case_active = "Y" '+
@@ -435,12 +435,12 @@ app.post('/case_procedure', (req, res) => {
 //Insert task_manager
 app.post('/task_manager', (req, res) => {
     let sql = "INSERT INTO mts_task_manager(" + 
-                "tmgr_cpcd_id," +
+                "tmgr_case_id," +
                 "tmgr_ps_id," + 
                 "tmgr_active," + 
                 "tmgr_editor" +
             ") VALUES('" +
-                req.body.tmgr_cpcd_id + "','" +
+                req.body.tmgr_case_id + "','" +
                 req.body.tmgr_ps_id + "','" +
                 req.body.tmgr_active + "','" +
                 req.body.tmgr_editor + "'" +
@@ -453,9 +453,9 @@ app.post('/task_manager', (req, res) => {
 
 //Update task_manager
 app.put('/task_manager/:id', (req, res) => {
-    let sql = "UPDATE mts_task_manager SET tmgr_cpcd_id = '"+ req.body.tmgr_cpcd_id + "',"+
+    let sql = "UPDATE mts_task_manager SET tmgr_case_id = '"+ req.body.tmgr_case_id + "',"+
 							"tmgr_ps_id = '"+ req.body.tmgr_ps_id + "' "+
-							"WHERE tmgr_cpcd_id = "+ req.params.id + ";"
+							"WHERE tmgr_case_id = "+ req.params.id + ";"
 
     let query = db.query(sql,(err,result) => {
         if(err) throw err	
@@ -534,7 +534,7 @@ app.get('/case_task/:tmgr_ps_id', (req, res) => {
 			'INNER JOIN mts_process '+
 			'ON pcs_id = case_pcs_id '+
 			'INNER JOIN mts_task_manager '+
-			'ON case_id = tmgr_cpcd_id '+
+			'ON case_id = tmgr_case_id '+
 			'WHERE tmgr_ps_id = '+ req.params.tmgr_ps_id + ' ' + 
 			'ORDER BY case_id DESC ' 
     let query = db.query(sql,(err,results) => { 
